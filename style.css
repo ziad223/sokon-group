@@ -1,7 +1,7 @@
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden;}
   body { font-family: 'Tajawal', sans-serif; background: #fdf6f0; color: #1a1a1c; overflow-x: hidden; transition: font-family .3s; }
   html[dir="ltr"] body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
-  html[dir="ltr"] .font-en { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+  html[dir="ltr"] .font-en { font-family: 'I BM Plex Sans Arabic', sans-serif; }
   .font-en { font-family: 'IBM Plex Sans Arabic', sans-serif; letter-spacing: 0.02em; }
 
   .grid-bg {
