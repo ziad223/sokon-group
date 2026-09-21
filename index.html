@@ -93,7 +93,204 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    html { scroll-behavior: smooth; overflow-x: hidden;}
+    body { font-family: 'Tajawal', sans-serif; background: #fdf6f0; color: #1a1a1c; overflow-x: hidden; transition: font-family .3s; }
+    html[dir="ltr"] body { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+    html[dir="ltr"] .font-en { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+    .font-en { font-family: 'IBM Plex Sans Arabic', sans-serif; letter-spacing: 0.02em; }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(152,65,33,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(152,65,33,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .gradient-primary { background: linear-gradient(135deg, #984121 0%, #7a3319 60%, #3d1a0d 100%); }
+    .text-gradient { background: linear-gradient(135deg, #984121, #d17d3c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .divider-line { width: 60px; height: 3px; background: linear-gradient(90deg, #984121, #d17d3c); border-radius: 2px; }
+
+    #navbar { transition: all .4s ease; }
+    #navbar.scrolled { background: rgba(253, 246, 240, 0.92); backdrop-filter: blur(16px); box-shadow: 0 4px 30px -10px rgba(152,65,33,.15); padding-top: .5rem; padding-bottom: .5rem; }
+
+    .lang-toggle { position: relative; display: inline-flex; align-items: center; gap: .35rem; padding: .35rem .55rem .35rem .35rem; background: rgba(255,255,255,.9); border: 1px solid rgba(152,65,33,.18); border-radius: 999px; cursor: pointer; transition: all .3s; backdrop-filter: blur(6px); }
+    .lang-toggle:hover { border-color: rgba(152,65,33,.5); transform: translateY(-1px); }
+    .lang-toggle .globe { width: 28px; height: 28px; border-radius: 999px; background: linear-gradient(135deg,#984121,#b85f24); color:#fff; display:flex; align-items:center; justify-content:center; font-size: .75rem; }
+    .lang-toggle .lang-label { font-size: .75rem; font-weight: 800; color: #7a3319; padding-inline: .35rem; font-family: 'IBM Plex Sans Arabic', sans-serif; }
+
+    .sector-card { transition: all .5s cubic-bezier(.2,.9,.3,1); }
+    .sector-card:hover { transform: translateY(-8px); }
+    .sector-card:hover .sector-img { transform: scale(1.08); }
+    .sector-card:hover .sector-overlay { opacity: 1; }
+
+    .partner-item { filter: grayscale(100%); opacity: .65; transition: all .4s; }
+    .partner-item:hover { filter: grayscale(0%); opacity: 1; }
+
+    .big-num { font-size: clamp(80px, 14vw, 220px); font-weight: 900; color: rgba(152,65,33,0.06); line-height: 1; position: absolute; pointer-events: none; user-select: none; }
+
+    .btn-primary { background: linear-gradient(135deg, #984121, #b85f24); color: #fff; transition: all .3s; box-shadow: 0 10px 30px -10px rgba(152,65,33,.6); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px -10px rgba(152,65,33,.8); }
+    .btn-ghost { border: 1.5px solid #984121; color: #984121; transition: all .3s; }
+    .btn-ghost:hover { background: #984121; color: #fff; }
+
+    @keyframes marquee { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+    .marquee-track { display: flex; animation: marquee 45s linear infinite; width: max-content; }
+    html[dir="ltr"] .marquee-track { animation-direction: reverse; }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -6px; right: 0; width: 0; height: 2px; background: #984121; transition: width .3s; }
+    html[dir="ltr"] .nav-link::after { right: auto; left: 0; }
+    .nav-link:hover::after { width: 100%; }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #fdf6f0; }
+    ::-webkit-scrollbar-thumb { background: #984121; border-radius: 5px; }
+
+    .faq-item { background: #fff; border: 1px solid rgba(152,65,33,.12); border-radius: 1.25rem; overflow: hidden; transition: all .35s ease; }
+    .faq-item:hover { border-color: rgba(152,65,33,.3); }
+    .faq-item.open { border-color: rgba(152,65,33,.45); box-shadow: 0 18px 40px -22px rgba(152,65,33,.4); }
+    .faq-q { cursor: pointer; user-select: none; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .45s ease, padding .35s ease; }
+    .faq-item.open .faq-a { max-height: 500px; padding-bottom: 1.5rem; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: #984121; color: #fff; }
+    .faq-icon { transition: all .35s ease; }
+
+    #chatbot-toggle { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 64px; height: 64px; border-radius: 999px; background: linear-gradient(135deg,#984121,#b85f24); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 15px 40px -10px rgba(152,65,33,.7), 0 0 0 0 rgba(152,65,33,.4); cursor: pointer; z-index: 60; transition: all .35s cubic-bezier(.2,.9,.3,1); animation: pulseRing 2.5s infinite; }
+    @keyframes pulseRing { 0% { box-shadow: 0 15px 40px -10px rgba(152,65,33,.7), 0 0 0 0 rgba(152,65,33,.5); } 70% { box-shadow: 0 15px 40px -10px rgba(152,65,33,.7), 0 0 0 18px rgba(152,65,33,0); } 100% { box-shadow: 0 15px 40px -10px rgba(152,65,33,.7), 0 0 0 0 rgba(152,65,33,0); } }
+    #chatbot-toggle:hover { transform: translateY(-3px) scale(1.05); animation-play-state: paused; }
+    #chatbot-toggle.active { animation: none; }
+    #chatbot-toggle .badge { position: absolute; top: -3px; right: -3px; width: 20px; height: 20px; border-radius: 999px; background: #22c55e; border: 3px solid #fff; }
+    #chatbot-toggle .badge::after { content: ''; position: absolute; inset: 0; border-radius: 999px; background: #22c55e; animation: badgePulse 1.8s infinite; }
+    @keyframes badgePulse { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(2.2); opacity: 0; } }
+
+    #chatbot-panel { position: fixed; bottom: 6.75rem; right: 1.5rem; width: min(400px, calc(100vw - 2rem)); height: min(620px, calc(100vh - 8.5rem)); background: #fff; border-radius: 1.75rem; box-shadow: 0 40px 90px -20px rgba(0,0,0,.4), 0 0 0 1px rgba(152,65,33,.08); display: flex; flex-direction: column; overflow: hidden; z-index: 60; opacity: 0; transform: translateY(24px) scale(.94); pointer-events: none; transition: all .4s cubic-bezier(.2,.9,.3,1); }
+    #chatbot-panel.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+    .chat-header { background: linear-gradient(135deg,#984121 0%,#7a3319 100%); color: #fff; padding: 1rem 1.15rem; display: flex; align-items: center; gap: .75rem; position: relative; overflow: hidden; }
+    .chat-header::before { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; border-radius: 999px; background: radial-gradient(circle, rgba(255,255,255,.12), transparent 70%); }
+    .chat-header .avatar { width: 44px; height: 44px; border-radius: 999px; background: rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; font-size: 1.2rem; border: 1.5px solid rgba(255,255,255,.3); position: relative; z-index: 1; }
+    .chat-header .avatar::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; border-radius: 999px; background: #22c55e; border: 2.5px solid #7a3319; }
+    .chat-body { flex: 1; overflow-y: auto; padding: 1.15rem; background: radial-gradient(circle at 20% 10%, rgba(152,65,33,.03), transparent 50%), radial-gradient(circle at 80% 90%, rgba(209,125,60,.04), transparent 50%), #fdf6f0; display: flex; flex-direction: column; gap: .85rem; }
+    .chat-body::-webkit-scrollbar { width: 6px; }
+    .chat-body::-webkit-scrollbar-thumb { background: #d17d3c; border-radius: 3px; }
+
+    .chat-msg { max-width: 88%; padding: .8rem 1rem; border-radius: 1.1rem; font-size: .875rem; line-height: 1.65; animation: msgIn .35s cubic-bezier(.2,.9,.3,1); word-wrap: break-word; }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .chat-msg.bot { background: #fff; color: #1a1a1c; align-self: flex-start; border: 1px solid rgba(152,65,33,.12); border-bottom-right-radius: .3rem; box-shadow: 0 2px 8px -4px rgba(152,65,33,.15); }
+    html[dir="ltr"] .chat-msg.bot { border-bottom-right-radius: 1.1rem; border-bottom-left-radius: .3rem; }
+    .chat-msg.user { background: linear-gradient(135deg,#984121,#b85f24); color: #fff; align-self: flex-end; border-bottom-left-radius: .3rem; box-shadow: 0 4px 12px -4px rgba(152,65,33,.5); }
+    html[dir="ltr"] .chat-msg.user { border-bottom-left-radius: 1.1rem; border-bottom-right-radius: .3rem; }
+
+    .chat-time { font-size: .65rem; opacity: .55; margin-top: .3rem; display: block; }
+
+    .chat-quick { display: flex; flex-wrap: wrap; gap: .4rem; padding: .6rem 1.1rem .35rem; background: #fdf6f0; border-top: 1px solid rgba(152,65,33,.06); }
+    .chat-quick button { font-size: .72rem; padding: .4rem .75rem; border-radius: 999px; background: #fff; color: #7a3319; border: 1px solid rgba(152,65,33,.22); transition: all .25s; font-weight: 700; display: inline-flex; align-items: center; gap: .3rem; }
+    .chat-quick button:hover { background: #984121; color: #fff; border-color: #984121; transform: translateY(-1px); }
+
+    .chat-input-row { display: flex; align-items: center; gap: .5rem; padding: .85rem; border-top: 1px solid rgba(152,65,33,.1); background: #fff; }
+    .chat-input-row input { flex: 1; padding: .7rem 1rem; border: 1.5px solid rgba(152,65,33,.15); border-radius: 999px; outline: none; font-size: .875rem; transition: all .25s; background: #fdf6f0; }
+    .chat-input-row input:focus { border-color: #984121; background: #fff; box-shadow: 0 0 0 4px rgba(152,65,33,.08); }
+    .chat-input-row button { width: 42px; height: 42px; border-radius: 999px; background: linear-gradient(135deg,#984121,#b85f24); color: #fff; display: flex; align-items: center; justify-content: center; transition: all .25s; flex-shrink: 0; box-shadow: 0 6px 16px -6px rgba(152,65,33,.6); }
+    .chat-input-row button:hover { transform: scale(1.05) rotate(-15deg); }
+    .chat-input-row button:disabled { opacity: .4; cursor: not-allowed; }
+
+    .typing-dots { display: inline-flex; align-items: center; gap: 2px; padding: .2rem 0; }
+    .typing-dots span { display: inline-block; width: 7px; height: 7px; background: #984121; border-radius: 999px; animation: typing 1.2s infinite; }
+    .typing-dots span:nth-child(2) { animation-delay: .2s; }
+    .typing-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes typing { 0%,60%,100% { transform: translateY(0); opacity: .35; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+    .eco-step { position: relative; background: #fff; border: 1px solid rgba(152,65,33,.1); border-radius: 1.75rem; padding: 2rem 1.75rem; transition: all .45s cubic-bezier(.2,.9,.3,1); overflow: hidden; }
+    .eco-step::before { content: ''; position: absolute; top: 0; right: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #984121, #d17d3c); transform: scaleX(0); transform-origin: right; transition: transform .5s cubic-bezier(.2,.9,.3,1); }
+    .eco-step:hover::before { transform: scaleX(1); }
+    .eco-step:hover { transform: translateY(-8px); border-color: rgba(152,65,33,.28); box-shadow: 0 25px 60px -30px rgba(61,26,13,.5); }
+    .eco-step .num-badge { position: absolute; top: 1.5rem; left: 1.5rem; font-size: 4.5rem; font-weight: 900; line-height: 1; color: rgba(152,65,33,.06); font-family: 'IBM Plex Sans Arabic', sans-serif; pointer-events: none; transition: color .4s; }
+    html[dir="ltr"] .eco-step .num-badge { left: auto; right: 1.5rem; }
+    .eco-step:hover .num-badge { color: rgba(152,65,33,.12); }
+
+    [data-lang] { transition: opacity .25s ease; }
+
+    /* ===== Modal ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15,15,16,.75); backdrop-filter: blur(10px);
+      z-index: 100; opacity: 0; pointer-events: none; transition: opacity .35s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.94);
+      width: min(820px, calc(100vw - 2rem)); max-height: calc(100vh - 3rem); overflow-y: auto;
+      background: #fff; border-radius: 2rem; z-index: 101;
+      box-shadow: 0 50px 120px -25px rgba(0,0,0,.65);
+      opacity: 0; pointer-events: none; transition: all .4s cubic-bezier(.2,.9,.3,1);
+    }
+    .modal-box.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+    .modal-box::-webkit-scrollbar { width: 8px; }
+    .modal-box::-webkit-scrollbar-track { background: #fdf6f0; border-radius: 4px; }
+    .modal-box::-webkit-scrollbar-thumb { background: #984121; border-radius: 4px; }
+
+    .stat-card { position: relative; overflow: hidden; }
+    .stat-card::after {
+      content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(152,65,33,.04), transparent 60%);
+      pointer-events: none;
+    }
+
+    .why-card { position: relative; overflow: hidden; transition: all .45s cubic-bezier(.2,.9,.3,1); }
+    .why-card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -30px rgba(61,26,13,.45); }
+    .why-card .why-icon { transition: all .45s cubic-bezier(.2,.9,.3,1); }
+    .why-card:hover .why-icon { transform: scale(1.1) rotate(-6deg); }
+
+    .legal-content h4 { font-weight: 900; color: #1a1a1c; margin-top: 1.5rem; margin-bottom: .75rem; font-size: 1.05rem; }
+    .legal-content h4:first-child { margin-top: 0; }
+    .legal-content p { color: rgba(26,26,28,.75); line-height: 1.9; margin-bottom: .75rem; font-size: .9rem; }
+    .legal-content ul { list-style: disc; padding-inline-start: 1.5rem; margin-bottom: 1rem; }
+    .legal-content li { color: rgba(26,26,28,.75); line-height: 1.9; margin-bottom: .35rem; font-size: .9rem; }
+    .legal-content strong { color: #7a3319; font-weight: 800; }
+
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23984121' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 18px 18px;
+      padding-right: 3rem !important;
+      cursor: pointer;
+      transition: all .25s ease;
+    }
+
+    html[dir="ltr"] select {
+      background-position: right 1rem center;
+      padding-right: 3rem !important;
+      padding-left: 1rem !important;
+    }
+
+    html[dir="rtl"] select {
+      background-position: left 1rem center;
+      padding-left: 3rem !important;
+      padding-right: 1rem !important;
+    }
+
+    select:hover {
+      border-color: #984121 !important;
+      box-shadow: 0 0 0 4px rgba(152, 65, 33, 0.06);
+    }
+
+    select:focus {
+      border-color: #984121 !important;
+      box-shadow: 0 0 0 4px rgba(152, 65, 33, 0.1);
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a3319' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    }
+
+    select option {
+      padding: 12px 16px;
+      background: #fff;
+      color: #1a1a1c;
+      font-family: inherit;
+    }
+  </style>
 </head>
 
 <body class="font-ar">
@@ -122,6 +319,8 @@
         <a href="#about" class="nav-link" data-lang="en" hidden>About</a>
         <a href="#sectors" class="nav-link" data-lang="ar">القطاعات</a>
         <a href="#sectors" class="nav-link" data-lang="en" hidden>Sectors</a>
+        <a href="#sokon-restaurant" class="nav-link" data-lang="ar">مطعم سُكون</a>
+        <a href="#sokon-restaurant" class="nav-link" data-lang="en" hidden>Sokon Restaurant</a>
         <a href="#ecosystem" class="nav-link" data-lang="ar">منهج العمل</a>
         <a href="#ecosystem" class="nav-link" data-lang="en" hidden>How we work</a>
         <a href="#vision" class="nav-link" data-lang="ar">الرؤية</a>
@@ -161,6 +360,8 @@
         <a href="#about" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="en" hidden>About</a>
         <a href="#sectors" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="ar">القطاعات</a>
         <a href="#sectors" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="en" hidden>Sectors</a>
+        <a href="#sokon-restaurant" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="ar">مطعم سُكون</a>
+        <a href="#sokon-restaurant" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="en" hidden>Sokon Restaurant</a>
         <a href="#ecosystem" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="ar">منهج العمل</a>
         <a href="#ecosystem" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="en" hidden>How we work</a>
         <a href="#vision" class="py-3 px-3 rounded-xl hover:bg-sakan-50" data-lang="ar">الرؤية</a>
@@ -247,12 +448,12 @@
 
       <div class="lg:col-span-5 relative" data-aos="fade-right" data-aos-delay="200">
         <div class="relative">
-          <div class="relative rounded-[2rem] overflow-hidden shadow-soft aspect-[4/5]"
+          <div class="relative rounded-[2rem] overflow-hidden shadow-soft bg-sakan-100"
             style="box-shadow: 0 30px 80px -30px rgba(61,26,13,.5);">
-            <img src="images/hero.jpg" alt="Sokon Group projects in Jazan" class="w-full h-full object-cover"
+            <img src="images/hero.jpeg" alt="Sokon Group projects in Jazan" class="w-full h-auto block"
               fetchpriority="high" decoding="async"
               onerror="this.parentElement.classList.add('gradient-primary'); this.style.display='none';">
-            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/25 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/25 to-transparent pointer-events-none"></div>
             <div class="absolute bottom-0 inset-x-0 p-8 text-white">
               <div class="text-xs font-en tracking-widest text-sakan-200 mb-2">Sokon GROUP · JAZAN</div>
             </div>
@@ -331,23 +532,23 @@
         <div class="lg:col-span-5" data-aos="fade-left">
           <div class="relative">
             <div class="grid grid-cols-2 gap-4">
-              <div class="rounded-2xl overflow-hidden aspect-square shadow-soft">
-                <img src="images/about-hospitality.jpg" class="w-full h-full object-cover" alt="Hospitality"
+              <div class="rounded-2xl overflow-hidden shadow-soft bg-sakan-100">
+                <img src="images/about-1.jpeg" class="w-full h-auto block" alt="Hospitality"
                   loading="lazy" decoding="async"
                   onerror="this.parentElement.classList.add('gradient-primary'); this.style.display='none';">
               </div>
-              <div class="rounded-2xl overflow-hidden aspect-square shadow-soft mt-8">
-                <img src="images/about-strategy.jpg" class="w-full h-full object-cover" alt="Strategy" loading="lazy"
+              <div class="rounded-2xl overflow-hidden shadow-soft mt-8 bg-sakan-100">
+                <img src="images/about-2.jpeg" class="w-full h-auto block" alt="Strategy" loading="lazy"
                   decoding="async"
                   onerror="this.parentElement.classList.add('gradient-primary'); this.style.display='none';">
               </div>
-              <div class="rounded-2xl overflow-hidden aspect-square shadow-soft -mt-8">
-                <img src="images/about-roots.jpg" class="w-full h-full object-cover" alt="Roots" loading="lazy"
+              <div class="rounded-2xl overflow-hidden shadow-soft -mt-8 bg-sakan-100">
+                <img src="images/about-3.jpeg" class="w-full h-auto block" alt="Roots" loading="lazy"
                   decoding="async"
                   onerror="this.parentElement.classList.add('gradient-primary'); this.style.display='none';">
               </div>
-              <div class="rounded-2xl overflow-hidden aspect-square shadow-soft">
-                <img src="images/about-operations.jpg" class="w-full h-full object-cover" alt="Operations"
+              <div class="rounded-2xl overflow-hidden shadow-soft bg-sakan-100">
+                <img src="images/about-4.jpeg" class="w-full h-auto block" alt="Operations"
                   loading="lazy" decoding="async"
                   onerror="this.parentElement.classList.add('gradient-primary'); this.style.display='none';">
               </div>
@@ -451,7 +652,7 @@
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <a href="#" class="sector-card group relative rounded-3xl overflow-hidden aspect-[3/4] shadow-soft block"
+        <a href="#sokon-restaurant" class="sector-card group relative rounded-3xl overflow-hidden aspect-[3/4] shadow-soft block"
           data-aos="fade-up">
           <img src="images/restaurants.jpg"
             class="sector-img w-full h-full object-cover transition-transform duration-700" alt="Restaurants"
@@ -619,6 +820,584 @@
         <span data-lang="ar">القائمة قابلة للتوسع — تُضاف كيانات جديدة باستمرار تحت مظلة المجموعة.</span>
         <span data-lang="en" hidden>The list is expandable — new entities are continuously added under the group.</span>
       </div>
+    </div>
+  </section>
+    <!-- ============================ SOKON VIDEOS SECTION ============================ -->
+  <section id="sokon-videos" class="py-28 relative overflow-hidden bg-ink-900">
+    
+    <!-- Decorative background -->
+    <div class="absolute top-0 left-1/4 w-[700px] h-[700px] bg-sakan-600/10 rounded-full blur-3xl -translate-y-1/2"></div>
+    <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-sakan-400/10 rounded-full blur-3xl translate-y-1/2"></div>
+    <div class="absolute inset-0 opacity-[0.03]" 
+      style="background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px); background-size: 80px 80px;"></div>
+    <div class="big-num top-10 left-6 font-en text-white/[0.03]">CINEMA</div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+      <!-- Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur text-white/90 px-4 py-1.5 rounded-full text-xs font-bold mb-5 border border-white/20">
+          <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+          <span data-lang="ar">تجربة بصرية · مقاطع حصرية</span>
+          <span data-lang="en" hidden>A Visual Experience · Exclusive Clips</span>
+        </div>
+
+        <div class="divider-line mx-auto mb-6"></div>
+
+        <div class="text-sm font-bold text-sakan-400 mb-3 tracking-widest" data-lang="ar">شاهد سُكون</div>
+        <div class="text-sm font-bold text-sakan-400 mb-3 tracking-widest" data-lang="en" hidden>Watch Sokon</div>
+
+        <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-5">
+          <span data-lang="ar">لحظات <span class="text-gradient">لا تُنسى</span> من قلب فيفاء</span>
+          <span data-lang="en" hidden>Unforgettable <span class="text-gradient">Moments</span> from Fifa</span>
+        </h2>
+
+        <p class="text-white/60 text-lg leading-relaxed">
+          <span data-lang="ar">مقاطع سينمائية تختصر جمال المكان، دفء الضيافة، وسحر الإطلالة في مطعم وكافيه سُكون.</span>
+          <span data-lang="en" hidden>Cinematic clips capturing the beauty of the place, the warmth of hospitality, and the charm of the view at Sokon Restaurant & Café.</span>
+        </p>
+      </div>
+
+      <!-- Videos Grid -->
+      <div class="grid lg:grid-cols-2 gap-8 mb-12">
+
+        <!-- Video 1 -->
+        <div class="group relative" data-aos="fade-up">
+          <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-ink-800 aspect-video" style="box-shadow: 0 40px 100px -30px rgba(152,65,33,.6);">
+            
+            <video 
+              class="w-full h-full object-cover"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="images/sokon-resturant.jpeg">
+              <source src="images/sokon-video.mov" type="video/mp4">
+              <source src="images/sokon-video.mov" type="video/quicktime">
+            </video>
+
+            <!-- Gradient overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-ink-900/30 pointer-events-none"></div>
+
+            <!-- Top badge -->
+            <div class="absolute top-5 right-5 flex items-center gap-2 bg-red-500/95 backdrop-blur text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+              <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+              <span data-lang="ar">مباشر · سُكون</span>
+              <span data-lang="en" hidden>Live · Sokon</span>
+            </div>
+
+            <!-- Top icon badge -->
+            <div class="absolute top-5 left-5 w-12 h-12 bg-white/15 backdrop-blur rounded-xl flex items-center justify-center border border-white/30">
+              <i class="fa-solid fa-mountain-sun text-white text-xl"></i>
+            </div>
+
+            <!-- Bottom content -->
+            <div class="absolute bottom-0 inset-x-0 p-6 text-white">
+              <div class="text-xs font-en tracking-widest text-sakan-300 mb-2">SOKON · CINEMATIC 01</div>
+              <h3 class="text-xl md:text-2xl font-black mb-1" data-lang="ar">إطلالة الخطم الساحرة</h3>
+              <h3 class="text-xl md:text-2xl font-black mb-1" data-lang="en" hidden>The Enchanting Al-Khatm View</h3>
+              <p class="text-xs md:text-sm text-white/70" data-lang="ar">لحظات من فوق السحاب في قمم جبال فيفاء</p>
+              <p class="text-xs md:text-sm text-white/70" data-lang="en" hidden>Moments above the clouds on the peaks of Fifa Mountains</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="group relative" data-aos="fade-up" data-aos-delay="150">
+          <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 bg-ink-800 aspect-video" style="box-shadow: 0 40px 100px -30px rgba(152,65,33,.6);">
+            
+            <video 
+              class="w-full h-full object-cover"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="images/sokon-resturant.jpeg">
+              <source src="images/sokon-video-2.mov" type="video/mp4">
+              <source src="images/sokon-video-2.mov" type="video/quicktime">
+            </video>
+
+            <!-- Gradient overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-transparent to-ink-900/30 pointer-events-none"></div>
+
+            <!-- Top badge -->
+            <div class="absolute top-5 right-5 flex items-center gap-2 bg-sakan-600/95 backdrop-blur text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+              <i class="fa-solid fa-utensils text-xs"></i>
+              <span data-lang="ar">تجربة الضيافة</span>
+              <span data-lang="en" hidden>Hospitality</span>
+            </div>
+
+            <!-- Top icon badge -->
+            <div class="absolute top-5 left-5 w-12 h-12 bg-white/15 backdrop-blur rounded-xl flex items-center justify-center border border-white/30">
+              <i class="fa-solid fa-mug-hot text-white text-xl"></i>
+            </div>
+
+            <!-- Bottom content -->
+            <div class="absolute bottom-0 inset-x-0 p-6 text-white">
+              <div class="text-xs font-en tracking-widest text-sakan-300 mb-2">SOKON · CINEMATIC 02</div>
+              <h3 class="text-xl md:text-2xl font-black mb-1" data-lang="ar">تجربة سُكون الكاملة</h3>
+              <h3 class="text-xl md:text-2xl font-black mb-1" data-lang="en" hidden>The Complete Sokon Experience</h3>
+              <p class="text-xs md:text-sm text-white/70" data-lang="ar">من الأطباق الشهية إلى القهوة السعودية الأصيلة</p>
+              <p class="text-xs md:text-sm text-white/70" data-lang="en" hidden>From delicious dishes to authentic Saudi coffee</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Highlight Bar -->
+      <div class="bg-gradient-to-r from-sakan-600/20 via-sakan-500/10 to-sakan-600/20 backdrop-blur border border-white/10 rounded-3xl p-6 md:p-8" data-aos="fade-up" data-aos-delay="200">
+        <div class="grid md:grid-cols-3 gap-6 items-center">
+          
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center border border-white/20 shrink-0">
+              <i class="fa-solid fa-film text-sakan-400 text-xl"></i>
+            </div>
+            <div>
+              <div class="text-2xl font-black text-white font-en">4K</div>
+              <div class="text-xs text-white/60 font-bold" data-lang="ar">جودة عالية</div>
+              <div class="text-xs text-white/60 font-bold" data-lang="en" hidden>High Quality</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-white/10 backdrop-blur rounded-2xl flex items-center justify-center border border-white/20 shrink-0">
+              <i class="fa-solid fa-cloud-sun text-sakan-400 text-xl"></i>
+            </div>
+            <div>
+              <div class="text-2xl font-black text-white font-en">360°</div>
+              <div class="text-xs text-white/60 font-bold" data-lang="ar">إطلالة بانورامية</div>
+              <div class="text-xs text-white/60 font-bold" data-lang="en" hidden>Panoramic View</div>
+            </div>
+          </div>
+
+          <div class="flex md:justify-end">
+            <a href="https://ziad223.github.io/sokon/" target="_blank" rel="noopener noreferrer"
+              class="btn-primary px-6 py-3 rounded-full font-bold text-sm inline-flex items-center gap-2 group">
+              <i class="fa-solid fa-play"></i>
+              <span data-lang="ar">استكشف المطعم كاملاً</span>
+              <span data-lang="en" hidden>Explore the Full Restaurant</span>
+              <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform" data-lang="ar"></i>
+              <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform" data-lang="en" hidden></i>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============================ SOKON RESTAURANT SECTION ============================ -->
+  <section id="sokon-restaurant" class="py-28 relative overflow-hidden bg-gradient-to-b from-sakan-50 via-white to-sakan-50">
+
+    <div class="absolute top-0 left-0 w-[600px] h-[600px] bg-sakan-200/30 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/3"></div>
+    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-sakan-300/20 rounded-full blur-3xl translate-y-1/3 translate-x-1/4"></div>
+    <div class="big-num top-10 right-6 font-en text-sakan-900/5">FEEFA</div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+      <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+        <div class="inline-flex items-center gap-2 bg-sakan-100 text-sakan-700 px-4 py-1.5 rounded-full text-xs font-bold mb-5 border border-sakan-200/60">
+          <i class="fa-solid fa-mountain-sun text-sakan-600"></i>
+          <span data-lang="ar">إطلالة الخطم · جبال فيفاء</span>
+          <span data-lang="en" hidden>Al-Khatm View · Fifa Mountains</span>
+        </div>
+
+        <div class="divider-line mx-auto mb-6"></div>
+
+        <div class="text-sm font-bold text-sakan-600 mb-3 tracking-widest" data-lang="ar">من قمم جبال فيفاء</div>
+        <div class="text-sm font-bold text-sakan-600 mb-3 tracking-widest" data-lang="en" hidden>From the peaks of Fifa Mountains</div>
+
+        <h2 class="text-4xl md:text-5xl font-black text-ink-900 leading-tight mb-5">
+          <span data-lang="ar">تجربة <span class="text-gradient">سُكون</span> الاستثنائية</span>
+          <span data-lang="en" hidden>The Exceptional <span class="text-gradient">Sokon</span> Experience</span>
+        </h2>
+
+        <p class="text-ink-700/80 text-lg leading-relaxed">
+          <span data-lang="ar">أطباق عربية وإيطالية ساحرة، مع إطلالة بانورامية تحبس الأنفاس فوق السحاب والضباب، وضيافة سعودية أصيلة.</span>
+          <span data-lang="en" hidden>Charming Arabic and Italian dishes, with a breathtaking panoramic view above the clouds and fog, and authentic Saudi hospitality.</span>
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-10 items-stretch mb-20">
+
+        <div class="lg:col-span-6 relative" data-aos="fade-left">
+          <div class="relative h-full min-h-[500px]">
+            <div class="relative rounded-[2rem] overflow-hidden shadow-soft bg-sakan-100 h-full" style="box-shadow: 0 30px 80px -30px rgba(61,26,13,.5);">
+              <img src="images/sokon-resturant.jpeg" alt="مطعم وكافيه سكون - إطلالة الخطم"
+                class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async"
+                onerror="this.parentElement.classList.add('gradient-primary'); this.style.display='none';">
+
+              <div class="absolute inset-0 bg-gradient-to-t from-ink-900/90 via-ink-900/30 to-transparent pointer-events-none"></div>
+
+              <div class="absolute top-6 right-6 bg-white/95 backdrop-blur rounded-2xl px-4 py-2 flex items-center gap-2 shadow-lg">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-xs font-bold text-ink-800" data-lang="ar">مفتوح الآن</span>
+                <span class="text-xs font-bold text-ink-800" data-lang="en" hidden>Open Now</span>
+              </div>
+
+              <div class="absolute bottom-0 inset-x-0 p-8 text-white">
+                <div class="text-xs font-en tracking-widest text-sakan-200 mb-2">SOKON RESTAURANT & CAFÉ</div>
+                <div class="text-2xl font-black mb-1" data-lang="ar">مطعم وكافيه سُكون</div>
+                <div class="text-2xl font-black mb-1" data-lang="en" hidden>Sokon Restaurant & Café</div>
+                <div class="flex items-center gap-2 text-sm text-white/80">
+                  <i class="fa-solid fa-location-dot text-sakan-300"></i>
+                  <span data-lang="ar">إطلالة الخطم · فيفاء</span>
+                  <span data-lang="en" hidden>Al-Khatm View · Fifa</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="absolute -top-5 -left-5 bg-white rounded-2xl shadow-soft p-4 border border-sakan-100 z-20 flex items-center gap-3">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white text-xl shrink-0">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-xl font-black text-sakan-700 font-en">4.9</div>
+                <div class="text-[10px] text-ink-700/70 font-bold" data-lang="ar">تقييم الضيوف</div>
+                <div class="text-[10px] text-ink-700/70 font-bold" data-lang="en" hidden>Guest rating</div>
+              </div>
+            </div>
+
+            <div class="absolute -bottom-5 -right-4 md:-right-6 bg-white rounded-2xl shadow-soft p-4 border border-sakan-100 z-20 flex items-center gap-3">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white text-xl shrink-0">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div class="leading-tight">
+                <div class="text-sm font-black text-sakan-700" data-lang="ar">مطبخ ذكي</div>
+                <div class="text-sm font-black text-sakan-700" data-lang="en" hidden>Smart Kitchen</div>
+                <div class="text-[10px] text-ink-700/70 font-bold" data-lang="ar">مربوط بـ Foodics</div>
+                <div class="text-[10px] text-ink-700/70 font-bold" data-lang="en" hidden>Foodics integrated</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 flex flex-col justify-center" data-aos="fade-right">
+          <div class="divider-line mb-6"></div>
+
+          <h3 class="text-3xl md:text-4xl font-black text-ink-900 leading-tight mb-6">
+            <span data-lang="ar">من أعلى قمة سياحية<br>في <span class="text-gradient">جبال فيفاء</span></span>
+            <span data-lang="en" hidden>From the highest tourist peak<br>in the <span class="text-gradient">Fifa Mountains</span></span>
+          </h3>
+
+          <p class="text-ink-700/80 leading-relaxed mb-8">
+            <span data-lang="ar">
+              حيث يلتقي الضباب بعبق القهوة السعودية والمذاق الأصيل، تأسس مطعم وكافيه سُكون لتقديم تجربة استثنائية تجمع بين روعة المنظر الطبيعي وجمال النكهات الشرقية والإيطالية الفاخرة.
+            </span>
+            <span data-lang="en" hidden>
+              Where the fog meets the aroma of Saudi coffee and authentic taste, Sokon Restaurant & Café was founded to offer an exceptional experience combining the splendor of nature with the beauty of luxurious Eastern and Italian flavors.
+            </span>
+          </p>
+
+          <div class="grid sm:grid-cols-2 gap-5 mb-10">
+            <div class="flex gap-4 p-5 bg-white rounded-2xl border border-sakan-100 shadow-sm hover:shadow-md transition-shadow">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white shrink-0">
+                <i class="fa-solid fa-leaf"></i>
+              </div>
+              <div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="ar">مكونات طازجة</div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="en" hidden>Fresh Ingredients</div>
+                <div class="text-xs text-ink-700/70" data-lang="ar">منتقاة يومياً بكل عناية</div>
+                <div class="text-xs text-ink-700/70" data-lang="en" hidden>Carefully selected daily</div>
+              </div>
+            </div>
+            <div class="flex gap-4 p-5 bg-white rounded-2xl border border-sakan-100 shadow-sm hover:shadow-md transition-shadow">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white shrink-0">
+                <i class="fa-solid fa-cloud-sun"></i>
+              </div>
+              <div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="ar">إطلالة بانورامية</div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="en" hidden>Panoramic View</div>
+                <div class="text-xs text-ink-700/70" data-lang="ar">فوق السحاب والضباب</div>
+                <div class="text-xs text-ink-700/70" data-lang="en" hidden>Above clouds & fog</div>
+              </div>
+            </div>
+            <div class="flex gap-4 p-5 bg-white rounded-2xl border border-sakan-100 shadow-sm hover:shadow-md transition-shadow">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white shrink-0">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="ar">تحضير فوري</div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="en" hidden>Instant Preparation</div>
+                <div class="text-xs text-ink-700/70" data-lang="ar">مربوط بالمطبخ الذكي</div>
+                <div class="text-xs text-ink-700/70" data-lang="en" hidden>Smart kitchen integrated</div>
+              </div>
+            </div>
+            <div class="flex gap-4 p-5 bg-white rounded-2xl border border-sakan-100 shadow-sm hover:shadow-md transition-shadow">
+              <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white shrink-0">
+                <i class="fa-solid fa-mug-hot"></i>
+              </div>
+              <div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="ar">ضيافة سعودية</div>
+                <div class="font-bold text-ink-900 mb-1 text-sm" data-lang="en" hidden>Saudi Hospitality</div>
+                <div class="text-xs text-ink-700/70" data-lang="ar">ترحيب حار يليق بضيوفنا</div>
+                <div class="text-xs text-ink-700/70" data-lang="en" hidden>Warm welcome for our guests</div>
+              </div>
+            </div>
+          </div>
+
+          <a href="https://ziad223.github.io/sokon/" target="_blank" rel="noopener noreferrer"
+            class="btn-primary px-8 py-4 rounded-full font-bold inline-flex items-center gap-3 text-lg group self-start">
+            <i class="fa-solid fa-utensils"></i>
+            <span data-lang="ar">استكشف مطعم وكافيه سُكون</span>
+            <span data-lang="en" hidden>Explore Sokon Restaurant & Café</span>
+            <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform" data-lang="ar"></i>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform" data-lang="en" hidden></i>
+          </a>
+        </div>
+      </div>
+
+ 
+
+    
+
+      <div class="mb-20">
+        <div class="text-center mb-12" data-aos="fade-up">
+          <div class="divider-line mx-auto mb-5"></div>
+          <div class="text-sm font-bold text-sakan-600 mb-3 tracking-widest" data-lang="ar">اشترك ووفر</div>
+          <div class="text-sm font-bold text-sakan-600 mb-3 tracking-widest" data-lang="en" hidden>Subscribe & Save</div>
+          <h3 class="text-3xl md:text-4xl font-black text-ink-900 mb-4">
+            <span data-lang="ar">الباقات الشهرية <span class="text-gradient">الذكية</span></span>
+            <span data-lang="en" hidden>Smart <span class="text-gradient">Monthly Packages</span></span>
+          </h3>
+          <p class="text-ink-700/80 max-w-2xl mx-auto" data-lang="ar">
+            ارتقِ بتجربتك اليومية معنا. اختر الباقة التي تناسب أسلوب حياتك واستمتع بقهوتك أو وجباتك المفضلة بتوفير استثنائي.
+          </p>
+          <p class="text-ink-700/80 max-w-2xl mx-auto" data-lang="en" hidden>
+            Elevate your daily experience with us. Choose the package that suits your lifestyle and enjoy exceptional savings.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-3xl border border-sakan-100 p-8 shadow-sm hover:shadow-lg transition-all duration-500 relative" data-aos="fade-up">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-white text-2xl mb-5">
+              <i class="fa-solid fa-mug-hot"></i>
+            </div>
+            <div class="text-xs font-bold text-gray-500 mb-2 tracking-widest" data-lang="ar">الفضية</div>
+            <div class="text-xs font-bold text-gray-500 mb-2 tracking-widest" data-lang="en" hidden>SILVER</div>
+            <h4 class="text-xl font-black text-ink-900 mb-4" data-lang="ar">باقة القهوة</h4>
+            <h4 class="text-xl font-black text-ink-900 mb-4" data-lang="en" hidden>Coffee Package</h4>
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="text-4xl font-black text-sakan-700 font-en">199</span>
+              <span class="text-sm text-ink-700/70" data-lang="ar">ريال / شهرياً</span>
+              <span class="text-sm text-ink-700/70" data-lang="en" hidden>SAR / month</span>
+            </div>
+            <ul class="space-y-3 mb-6 text-sm">
+              <li class="flex items-start gap-2 text-ink-700/80">
+                <i class="fa-solid fa-check text-sakan-600 mt-1 text-xs"></i>
+                <span data-lang="ar">قهوة يومية (حار أو بارد)</span>
+                <span data-lang="en" hidden>Daily coffee (hot or cold)</span>
+              </li>
+              <li class="flex items-start gap-2 text-ink-700/80">
+                <i class="fa-solid fa-check text-sakan-600 mt-1 text-xs"></i>
+                <span data-lang="ar">خصم 5% على إجمالي الفاتورة</span>
+                <span data-lang="en" hidden>5% discount on total bill</span>
+              </li>
+              <li class="flex items-start gap-2 text-ink-700/80">
+                <i class="fa-solid fa-check text-sakan-600 mt-1 text-xs"></i>
+                <span data-lang="ar">خصم 10% على حجز الأكواخ</span>
+                <span data-lang="en" hidden>10% discount on cabin booking</span>
+              </li>
+            </ul>
+            <a href="https://ziad223.github.io/sokon/" target="_blank" rel="noopener noreferrer"
+              class="block text-center py-3 rounded-xl font-bold border-2 border-sakan-600 text-sakan-700 hover:bg-sakan-600 hover:text-white transition-colors">
+              <span data-lang="ar">اشترك الآن</span>
+              <span data-lang="en" hidden>Subscribe Now</span>
+            </a>
+          </div>
+
+          <div class="bg-gradient-to-br from-sakan-600 to-sakan-800 rounded-3xl p-8 shadow-xl relative text-white transform md:-translate-y-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-sakan-700 text-xs font-black px-4 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+              <span data-lang="ar">⭐ الخيار المفضل</span>
+              <span data-lang="en" hidden>⭐ Most Popular</span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-white text-2xl mb-5 border border-white/30">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <div class="text-xs font-bold text-white/70 mb-2 tracking-widest" data-lang="ar">الذهبية</div>
+            <div class="text-xs font-bold text-white/70 mb-2 tracking-widest" data-lang="en" hidden>GOLD</div>
+            <h4 class="text-xl font-black mb-4" data-lang="ar">باقة الفطور</h4>
+            <h4 class="text-xl font-black mb-4" data-lang="en" hidden>Breakfast Package</h4>
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="text-4xl font-black font-en">499</span>
+              <span class="text-sm text-white/70" data-lang="ar">ريال / شهرياً</span>
+              <span class="text-sm text-white/70" data-lang="en" hidden>SAR / month</span>
+            </div>
+            <ul class="space-y-3 mb-6 text-sm">
+              <li class="flex items-start gap-2 text-white/90">
+                <i class="fa-solid fa-check text-white mt-1 text-xs"></i>
+                <span data-lang="ar">خصم 15% على إجمالي الفاتورة</span>
+                <span data-lang="en" hidden>15% discount on total bill</span>
+              </li>
+              <li class="flex items-start gap-2 text-white/90">
+                <i class="fa-solid fa-check text-white mt-1 text-xs"></i>
+                <span data-lang="ar">خصم 25% على حجز الأكواخ</span>
+                <span data-lang="en" hidden>25% discount on cabin booking</span>
+              </li>
+              <li class="flex items-start gap-2 text-white/90">
+                <i class="fa-solid fa-check text-white mt-1 text-xs"></i>
+                <span data-lang="ar">صلاحية الحجز في أوقات الذروة (الويكند)</span>
+                <span data-lang="en" hidden>Booking valid during peak times (weekends)</span>
+              </li>
+              <li class="flex items-start gap-2 text-white/90">
+                <i class="fa-solid fa-check text-white mt-1 text-xs"></i>
+                <span data-lang="ar">فطور وقهوة يومية مجاناً</span>
+                <span data-lang="en" hidden>Free daily breakfast & coffee</span>
+              </li>
+            </ul>
+            <a href="https://ziad223.github.io/sokon/" target="_blank" rel="noopener noreferrer"
+              class="block text-center py-3 rounded-xl font-bold bg-white text-sakan-700 hover:bg-sakan-50 transition-colors">
+              <span data-lang="ar">اشترك الآن</span>
+              <span data-lang="en" hidden>Subscribe Now</span>
+            </a>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-sakan-100 p-8 shadow-sm hover:shadow-lg transition-all duration-500 relative" data-aos="fade-up" data-aos-delay="200">
+            <div class="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center text-white text-2xl mb-5">
+              <i class="fa-solid fa-gem"></i>
+            </div>
+            <div class="text-xs font-bold text-sakan-600 mb-2 tracking-widest" data-lang="ar">البلاتينية</div>
+            <div class="text-xs font-bold text-sakan-600 mb-2 tracking-widest" data-lang="en" hidden>PLATINUM</div>
+            <h4 class="text-xl font-black text-ink-900 mb-4" data-lang="ar">الباقة الشاملة</h4>
+            <h4 class="text-xl font-black text-ink-900 mb-4" data-lang="en" hidden>All-Inclusive Package</h4>
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="text-4xl font-black text-sakan-700 font-en">899</span>
+              <span class="text-sm text-ink-700/70" data-lang="ar">ريال / شهرياً</span>
+              <span class="text-sm text-ink-700/70" data-lang="en" hidden>SAR / month</span>
+            </div>
+            <ul class="space-y-3 mb-6 text-sm">
+              <li class="flex items-start gap-2 text-ink-700/80">
+                <i class="fa-solid fa-check text-sakan-600 mt-1 text-xs"></i>
+                <span data-lang="ar">خصم 30% على إجمالي الفاتورة</span>
+                <span data-lang="en" hidden>30% discount on total bill</span>
+              </li>
+              <li class="flex items-start gap-2 text-ink-700/80">
+                <i class="fa-solid fa-check text-sakan-600 mt-1 text-xs"></i>
+                <span data-lang="ar">خصم 50% على حجز الأكواخ</span>
+                <span data-lang="en" hidden>50% discount on cabin booking</span>
+              </li>
+              <li class="flex items-start gap-2 text-ink-700/80">
+                <i class="fa-solid fa-check text-sakan-600 mt-1 text-xs"></i>
+                <span data-lang="ar">أولوية الحجز المفتوح في أي وقت</span>
+                <span data-lang="en" hidden>Priority open booking anytime</span>
+              </li>
+              <li class="flex items-start gap-2 text-ink-700/80">
+                <i class="fa-solid fa-check text-sakan-600 mt-1 text-xs"></i>
+                <span data-lang="ar">حجز مجاني للديوانية (مرة شهرياً)</span>
+                <span data-lang="en" hidden>Free Diwaniya booking (monthly)</span>
+              </li>
+            </ul>
+            <a href="https://ziad223.github.io/sokon/" target="_blank" rel="noopener noreferrer"
+              class="block text-center py-3 rounded-xl font-bold border-2 border-sakan-600 text-sakan-700 hover:bg-sakan-600 hover:text-white transition-colors">
+              <span data-lang="ar">اشترك الآن</span>
+              <span data-lang="en" hidden>Subscribe Now</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-20">
+        <div class="text-center mb-12" data-aos="fade-up">
+          <div class="divider-line mx-auto mb-5"></div>
+          <div class="text-sm font-bold text-sakan-600 mb-3 tracking-widest" data-lang="ar">تجارب حقيقية</div>
+          <div class="text-sm font-bold text-sakan-600 mb-3 tracking-widest" data-lang="en" hidden>Real Experiences</div>
+          <h3 class="text-3xl md:text-4xl font-black text-ink-900">
+            <span data-lang="ar">ماذا قالوا عن <span class="text-gradient">سُكون؟</span></span>
+            <span data-lang="en" hidden>What They Said About <span class="text-gradient">Sokon?</span></span>
+          </h3>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-3xl border border-sakan-100 p-7 shadow-sm hover:shadow-md transition-shadow" data-aos="fade-up">
+            <div class="flex gap-1 mb-4 text-sakan-600">
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+            </div>
+            <p class="text-ink-700/80 leading-relaxed mb-5 text-sm" data-lang="ar">
+              "المكان خيالي في قمة الجبل، تجربة الأكل مع إطلالة الخطم والضباب لا توصف. المندي لحم لذيذ جداً والباستا الإيطالية مضبوطة ومميزة."
+            </p>
+            <p class="text-ink-700/80 leading-relaxed mb-5 text-sm" data-lang="en" hidden>
+              "The place is magical at the top of the mountain. The dining experience with Al-Khatm view and fog is indescribable. The lamb Mandi is delicious and the Italian pasta is perfectly done."
+            </p>
+            <div class="flex items-center gap-3 pt-4 border-t border-sakan-100">
+              <div class="w-10 h-10 gradient-primary rounded-full flex items-center justify-center text-white font-black text-sm">ف</div>
+              <div>
+                <div class="font-bold text-ink-900 text-sm" data-lang="ar">فهد الخالدي</div>
+                <div class="font-bold text-ink-900 text-sm" data-lang="en" hidden>Fahad Al-Khalidi</div>
+                <div class="text-xs text-ink-700/60" data-lang="ar">زائر من الرياض</div>
+                <div class="text-xs text-ink-700/60" data-lang="en" hidden>Visitor from Riyadh</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-sakan-100 p-7 shadow-sm hover:shadow-md transition-shadow" data-aos="fade-up" data-aos-delay="100">
+            <div class="flex gap-1 mb-4 text-sakan-600">
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+            </div>
+            <p class="text-ink-700/80 leading-relaxed mb-5 text-sm" data-lang="ar">
+              "التطبيق رائع وسهل جداً، طلبت ودفعت بـ Apple Pay وتابعت تحضير الطلب في المطبخ خطوة بخطوة بالثواني. فكرة كرت الولاء الرقمي مبتكرة!"
+            </p>
+            <p class="text-ink-700/80 leading-relaxed mb-5 text-sm" data-lang="en" hidden>
+              "The app is amazing and very easy. I ordered and paid with Apple Pay and followed the order preparation in the kitchen step by step. The digital loyalty card idea is innovative!"
+            </p>
+            <div class="flex items-center gap-3 pt-4 border-t border-sakan-100">
+              <div class="w-10 h-10 gradient-primary rounded-full flex items-center justify-center text-white font-black text-sm">م</div>
+              <div>
+                <div class="font-bold text-ink-900 text-sm" data-lang="ar">محمد الشهراني</div>
+                <div class="font-bold text-ink-900 text-sm" data-lang="en" hidden>Mohammed Al-Shahrani</div>
+                <div class="text-xs text-ink-700/60" data-lang="ar">زائر دائم للمطعم</div>
+                <div class="text-xs text-ink-700/60" data-lang="en" hidden>Regular visitor</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-sakan-100 p-7 shadow-sm hover:shadow-md transition-shadow" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex gap-1 mb-4 text-sakan-600">
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+              <i class="fa-solid fa-star text-sm"></i>
+            </div>
+            <p class="text-ink-700/80 leading-relaxed mb-5 text-sm" data-lang="ar">
+              "المشروبات الباردة والقهوة ممتازة جداً. حجز الطاولة مسبقاً من الويب يحل مشكلة الانتظار تماماً وخصوصاً في أوقات العطلات السياحية."
+            </p>
+            <p class="text-ink-700/80 leading-relaxed mb-5 text-sm" data-lang="en" hidden>
+              "Cold drinks and coffee are excellent. Pre-booking a table from the web solves the waiting issue completely, especially during tourist holidays."
+            </p>
+            <div class="flex items-center gap-3 pt-4 border-t border-sakan-100">
+              <div class="w-10 h-10 gradient-primary rounded-full flex items-center justify-center text-white font-black text-sm">س</div>
+              <div>
+                <div class="font-bold text-ink-900 text-sm" data-lang="ar">سارة الفيفي</div>
+                <div class="font-bold text-ink-900 text-sm" data-lang="en" hidden>Sara Al-Fifi</div>
+                <div class="text-xs text-ink-700/60" data-lang="ar">عميلة محلية</div>
+                <div class="text-xs text-ink-700/60" data-lang="en" hidden>Local customer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-ink-900 via-ink-800 to-sakan-900 rounded-[2rem] p-10 md:p-14 text-white relative overflow-hidden" data-aos="fade-up">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-sakan-600/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-72 h-72 bg-sakan-400/10 rounded-full blur-3xl"></div>
+
+      
+      </div>
+
     </div>
   </section>
 
@@ -1507,13 +2286,12 @@
     </div>
   </section>
 
-  <!-- ============================ FOOTER (PROFESSIONAL) ============================ -->
+  <!-- ============================ FOOTER ============================ -->
   <footer class="bg-ink-900 text-white pt-20 pb-8 relative overflow-hidden">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-sakan-600/10 rounded-full blur-3xl">
     </div>
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
-      <!-- Top: Brand + Newsletter -->
       <div class="grid lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
         <div class="lg:col-span-5">
           <div class="flex items-center gap-3 mb-6">
@@ -1585,7 +2363,6 @@
         </div>
       </div>
 
-      <!-- Middle: 4 columns of links -->
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 py-12">
         <div>
           <h4 class="font-black mb-5 text-sakan-400" data-lang="ar">عن المجموعة</h4>
@@ -1613,8 +2390,7 @@
           <h4 class="font-black mb-5 text-sakan-400" data-lang="ar">قطاعاتنا</h4>
           <h4 class="font-black mb-5 text-sakan-400" data-lang="en" hidden>Our sectors</h4>
           <ul class="space-y-3 text-sm text-white/60">
-            <li class="flex items-center gap-2"><i class="fa-solid fa-utensils text-sakan-600 text-xs"></i><span
-                data-lang="ar">المطاعم والكافيهات</span><span data-lang="en" hidden>Restaurants & Cafés</span></li>
+            <li><a href="#sokon-restaurant" class="hover:text-sakan-400 transition flex items-center gap-2"><i class="fa-solid fa-utensils text-sakan-600 text-xs"></i><span data-lang="ar">المطاعم والكافيهات</span><span data-lang="en" hidden>Restaurants & Cafés</span></a></li>
             <li class="flex items-center gap-2"><i class="fa-solid fa-couch text-sakan-600 text-xs"></i><span
                 data-lang="ar">الديوانيات</span><span data-lang="en" hidden>Diwaniyas</span></li>
             <li class="flex items-center gap-2"><i class="fa-solid fa-house-chimney text-sakan-600 text-xs"></i><span
@@ -1681,7 +2457,6 @@
         </div>
       </div>
 
-      <!-- Bottom bar -->
       <div
         class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
         <div data-lang="ar">© 2024 مجموعة سكون. جميع الحقوق محفوظة.</div>
@@ -1766,11 +2541,10 @@
     </div>
   </div>
 
-  <!-- ============================ PARTNER MODAL (WIDE) ============================ -->
+  <!-- ============================ PARTNER MODAL ============================ -->
   <div id="partnerModalOverlay" class="modal-overlay"></div>
   <div id="partnerModal" class="modal-box" role="dialog" aria-modal="true">
     <div class="relative">
-      <!-- Header -->
       <div class="gradient-primary p-8 md:p-10 text-white relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
         <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
@@ -1798,7 +2572,6 @@
         </div>
       </div>
 
-      <!-- Form -->
       <form class="p-8 md:p-10" id="partnerModalForm">
         <div class="grid md:grid-cols-2 gap-5 mb-5">
           <div>
@@ -1901,7 +2674,7 @@
     </div>
   </div>
 
-  <!-- ============================ LEGAL MODAL (PRIVACY / TERMS / COOKIES) ============================ -->
+  <!-- ============================ LEGAL MODAL ============================ -->
   <div id="legalModalOverlay" class="modal-overlay"></div>
   <div id="legalModal" class="modal-box" role="dialog" aria-modal="true">
     <div class="relative">
@@ -1928,15 +2701,569 @@
         </div>
       </div>
 
-      <div class="p-8 md:p-10 legal-content" id="legalContent">
-        <!-- Content injected via JS -->
-      </div>
+      <div class="p-8 md:p-10 legal-content" id="legalContent"></div>
     </div>
   </div>
 
   <!-- ============================ SCRIPTS ============================ -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="main.js"></script>
+  <script>
+    /* ------------------ AOS ------------------ */
+    AOS.init({ duration: 800, once: true, offset: 80 });
+
+    /* ------------------ Data ------------------ */
+    const REQUEST_TYPES = {
+      ar: ['شراكة استراتيجية', 'استفسار عام', 'فرصة عمل', 'مورد / متعاون'],
+      en: ['Strategic partnership', 'General inquiry', 'Job opportunity', 'Supplier / collaborator']
+    };
+    const PARTNER_SECTORS = {
+      ar: ['الضيافة والمطاعم', 'السياحة والنزل', 'النقل واللوجستيك', 'التراث والزراعة', 'أخرى'],
+      en: ['Hospitality & dining', 'Tourism & lodges', 'Transport & logistics', 'Heritage & agriculture', 'Other']
+    };
+    const PARTNER_TYPES = {
+      ar: ['شراكة تجارية', 'شراكة تشغيلية', 'شراكة استثمارية', 'مورد خدمات', 'أخرى'],
+      en: ['Commercial partnership', 'Operational partnership', 'Investment partnership', 'Service provider', 'Other']
+    };
+
+    function populateSelect(id, data, lang) {
+      const sel = document.getElementById(id);
+      if (!sel) return;
+      sel.innerHTML = '';
+      data[lang].forEach(t => {
+        const o = document.createElement('option');
+        o.textContent = t;
+        sel.appendChild(o);
+      });
+    }
+
+    /* ------------------ Language ------------------ */
+    const langToggle = document.getElementById('langToggle');
+    const langLabel = document.getElementById('langLabel');
+    const html = document.documentElement;
+
+    function setLang(lang) {
+      html.setAttribute('lang', lang);
+      html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        if (el.getAttribute('data-lang') === lang) {
+          el.removeAttribute('hidden');
+          el.style.display = '';
+        } else {
+          el.setAttribute('hidden', '');
+          el.style.display = 'none';
+        }
+      });
+
+      document.querySelectorAll('[data-placeholder-ar]').forEach(el => {
+        el.placeholder = lang === 'ar' ? el.dataset.placeholderAr : el.dataset.placeholderEn;
+      });
+
+      populateSelect('requestType', REQUEST_TYPES, lang);
+      populateSelect('partnerSectorSelect', PARTNER_SECTORS, lang);
+      populateSelect('partnerTypeSelect', PARTNER_TYPES, lang);
+
+      langLabel.textContent = lang === 'ar' ? 'EN' : 'ع';
+
+      const ci = document.getElementById('chatInput');
+      const cie = document.getElementById('chatInputEn');
+      if (ci && cie) {
+        ci.placeholder = lang === 'ar' ? 'اكتب رسالتك...' : '';
+        cie.placeholder = lang === 'en' ? 'Type your message...' : '';
+      }
+
+      const ltAr = document.getElementById('legalTitleAr');
+      const ltEn = document.getElementById('legalTitleEn');
+      if (ltAr && ltEn) {
+        if (lang === 'ar') { ltAr.removeAttribute('hidden'); ltAr.style.display=''; ltEn.setAttribute('hidden',''); ltEn.style.display='none'; }
+        else { ltAr.setAttribute('hidden',''); ltAr.style.display='none'; ltEn.removeAttribute('hidden'); ltEn.style.display=''; }
+      }
+
+      localStorage.setItem('sakan-lang', lang);
+    }
+    const savedLang = localStorage.getItem('sakan-lang') || 'ar';
+    setLang(savedLang);
+
+    langToggle.addEventListener('click', () => {
+      const cur = html.getAttribute('lang');
+      setLang(cur === 'ar' ? 'en' : 'ar');
+      renderWelcome();
+    });
+
+    /* ------------------ Navbar ------------------ */
+    const nav = document.getElementById('navbar');
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+      if (window.scrollY > 500) backTop.style.display = 'flex';
+      else backTop.style.display = 'none';
+    });
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    /* ------------------ Mobile menu ------------------ */
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+    /* ------------------ FAQ ------------------ */
+    document.querySelectorAll('#faqList .faq-item').forEach(item => {
+      item.querySelector('.faq-q').addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('#faqList .faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    /* ------------------ Contact form ------------------ */
+    document.getElementById('mainContactForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const lang = html.getAttribute('lang');
+      alert(lang === 'ar'
+        ? 'تم استلام رسالتك، سنتواصل معك قريبًا بإذن الله.'
+        : 'Your message has been received. We will contact you soon.');
+      e.target.reset();
+      populateSelect('requestType', REQUEST_TYPES, lang);
+    });
+
+    /* ------------------ Newsletter form ------------------ */
+    document.getElementById('newsletterForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const lang = html.getAttribute('lang');
+      alert(lang === 'ar'
+        ? 'تم اشتراكك في النشرة البريدية بنجاح، شكرًا لك!'
+        : 'You have successfully subscribed to our newsletter. Thank you!');
+      e.target.reset();
+    });
+
+    /* ------------------ Partner Modal ------------------ */
+    const partnerModal = document.getElementById('partnerModal');
+    const partnerModalOverlay = document.getElementById('partnerModalOverlay');
+    const openPartnerBtn = document.getElementById('openPartnerModal');
+    const closePartnerBtn = document.getElementById('closePartnerModal');
+
+    function openPartnerModal() {
+      partnerModalOverlay.classList.add('open');
+      partnerModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closePartnerModal() {
+      partnerModalOverlay.classList.remove('open');
+      partnerModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    openPartnerBtn?.addEventListener('click', openPartnerModal);
+    closePartnerBtn?.addEventListener('click', closePartnerModal);
+    partnerModalOverlay?.addEventListener('click', closePartnerModal);
+
+    document.getElementById('partnerModalForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const lang = html.getAttribute('lang');
+      alert(lang === 'ar'
+        ? 'تم استلام طلب الشراكة بنجاح، سيتواصل معك فريق تطوير الأعمال خلال 24-48 ساعة.'
+        : 'Your partnership request has been received. Our business development team will contact you within 24-48 hours.');
+      e.target.reset();
+      populateSelect('partnerSectorSelect', PARTNER_SECTORS, lang);
+      populateSelect('partnerTypeSelect', PARTNER_TYPES, lang);
+      closePartnerModal();
+    });
+
+    /* ------------------ Legal Modal ------------------ */
+    const legalModal = document.getElementById('legalModal');
+    const legalModalOverlay = document.getElementById('legalModalOverlay');
+    const closeLegalBtn = document.getElementById('closeLegalModal');
+    const legalContent = document.getElementById('legalContent');
+    const legalIcon = document.getElementById('legalIcon');
+
+    const LEGAL_DATA = {
+      privacy: {
+        ar: {
+          title: 'سياسة الخصوصية',
+          icon: 'fa-shield-halved',
+          content: `
+            <h4>مقدمة</h4>
+            <p>تلتزم <strong>مجموعة سكون</strong> بحماية خصوصيتك والحفاظ على سرية بياناتك الشخصية. توضح هذه السياسة كيفية جمعنا واستخدامنا وحمايتنا للمعلومات التي تقدمها عند زيارتك لموقعنا أو تواصلك معنا.</p>
+            <h4>المعلومات التي نجمعها</h4>
+            <ul>
+              <li>الاسم الكامل ومعلومات الاتصال (البريد الإلكتروني، رقم الجوال).</li>
+              <li>اسم الشركة أو الجهة التي تمثلها.</li>
+              <li>محتوى رسائلك واستفساراتك.</li>
+              <li>بيانات تقنية عن جهازك ومتصفحك لأغراض تحسين الخدمة.</li>
+            </ul>
+            <h4>كيف نستخدم معلوماتك</h4>
+            <ul>
+              <li>الرد على استفساراتك وطلبات الشراكة.</li>
+              <li>تحسين خدماتنا ومنظومتنا التشغيلية.</li>
+              <li>إرسال تحديثات ومعلومات عن مشاريعنا (بعد موافقتك).</li>
+              <li>الامتثال للمتطلبات القانونية والتنظيمية.</li>
+            </ul>
+            <h4>حماية البيانات</h4>
+            <p>نطبق إجراءات أمنية تقنية وتنظيمية مناسبة لحماية بياناتك من الوصول غير المصرح به أو التعديل أو الإفشاء. لا نشارك بياناتك مع أطراف ثالثة إلا بموجب التزامات قانونية أو بموافقتك الصريحة.</p>
+            <h4>حقوقك</h4>
+            <ul>
+              <li>الحق في الوصول إلى بياناتك الشخصية.</li>
+              <li>الحق في تصحيح أو تحديث بياناتك.</li>
+              <li>الحق في حذف بياناتك وفقًا للأنظمة المعمول بها.</li>
+              <li>الحق في الاعتراض على معالجة بياناتك.</li>
+            </ul>
+            <h4>التواصل معنا</h4>
+            <p>لأي استفسار بشأن هذه السياسة، يمكنك التواصل معنا عبر البريد الإلكتروني: <strong>info@sakangroup.sa</strong></p>
+          `
+        },
+        en: {
+          title: 'Privacy Policy',
+          icon: 'fa-shield-halved',
+          content: `
+            <h4>Introduction</h4>
+            <p><strong>Sokon Group</strong> is committed to protecting your privacy and maintaining the confidentiality of your personal data. This policy explains how we collect, use, and protect the information you provide when visiting our website or contacting us.</p>
+            <h4>Information We Collect</h4>
+            <ul>
+              <li>Full name and contact information (email, phone).</li>
+              <li>Company or entity name you represent.</li>
+              <li>Content of your messages and inquiries.</li>
+              <li>Technical data about your device and browser for service improvement.</li>
+            </ul>
+            <h4>How We Use Your Information</h4>
+            <ul>
+              <li>Responding to your inquiries and partnership requests.</li>
+              <li>Improving our services and operational ecosystem.</li>
+              <li>Sending updates and information about our projects (with your consent).</li>
+              <li>Complying with legal and regulatory requirements.</li>
+            </ul>
+            <h4>Data Protection</h4>
+            <p>We apply appropriate technical and organizational security measures to protect your data from unauthorized access, modification, or disclosure. We do not share your data with third parties except under legal obligations or with your explicit consent.</p>
+            <h4>Your Rights</h4>
+            <ul>
+              <li>The right to access your personal data.</li>
+              <li>The right to correct or update your data.</li>
+              <li>The right to delete your data in accordance with applicable regulations.</li>
+              <li>The right to object to the processing of your data.</li>
+            </ul>
+            <h4>Contact Us</h4>
+            <p>For any inquiries regarding this policy, you can contact us via email: <strong>info@sakangroup.sa</strong></p>
+          `
+        }
+      },
+      terms: {
+        ar: {
+          title: 'الشروط والأحكام',
+          icon: 'fa-file-contract',
+          content: `
+            <h4>قبول الشروط</h4>
+            <p>باستخدامك لموقع <strong>مجموعة سكون</strong>، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي جزء منها، يرجى عدم استخدام الموقع.</p>
+            <h4>استخدام الموقع</h4>
+            <ul>
+              <li>يُمنع استخدام الموقع لأي أغراض غير قانونية أو غير مصرح بها.</li>
+              <li>يُمنع محاولة الوصول غير المصرح به إلى أنظمة الموقع أو بيانات المستخدمين.</li>
+              <li>يُمنع نسخ أو إعادة نشر محتوى الموقع دون إذن كتابي مسبق.</li>
+            </ul>
+            <h4>الملكية الفكرية</h4>
+            <p>جميع المحتويات المعروضة على الموقع — بما في ذلك النصوص، الشعارات، التصاميم، والصور — هي ملك لـ <strong>مجموعة سكون</strong> أو مرخصة لها، ومحمية بموجب أنظمة الملكية الفكرية.</p>
+            <h4>الشراكات والتعاقدات</h4>
+            <p>تقديم طلب شراكة عبر الموقع لا يُعد التزامًا قانونيًا من أي طرف. تخضع جميع الشراكات لاتفاقيات رسمية منفصلة يتم توقيعها بين الأطراف المعنية.</p>
+            <h4>حدود المسؤولية</h4>
+            <p>نبذل قصارى جهدنا لضمان دقة المعلومات المعروضة، لكننا لا نتحمل أي مسؤولية عن أي أضرار مباشرة أو غير مباشرة ناتجة عن استخدام الموقع أو الاعتماد على محتواه.</p>
+            <h4>التعديلات</h4>
+            <p>نحتفظ بالحق في تعديل هذه الشروط في أي وقت. تصبح التعديلات سارية فور نشرها على الموقع. استمرارك في استخدام الموقع بعد النشر يُعد موافقة ضمنية على التعديلات.</p>
+            <h4>القانون المطبق</h4>
+            <p>تخضع هذه الشروط وتُفسر وفقًا لأنظمة المملكة العربية السعودية، وتختص محاكمها بالنظر في أي نزاع ينشأ عنها.</p>
+          `
+        },
+        en: {
+          title: 'Terms & Conditions',
+          icon: 'fa-file-contract',
+          content: `
+            <h4>Acceptance of Terms</h4>
+            <p>By using the <strong>Sokon Group</strong> website, you agree to comply with these terms and conditions. If you do not agree with any part of them, please do not use the site.</p>
+            <h4>Website Use</h4>
+            <ul>
+              <li>Using the site for any illegal or unauthorized purpose is prohibited.</li>
+              <li>Attempting unauthorized access to site systems or user data is prohibited.</li>
+              <li>Copying or republishing site content without prior written permission is prohibited.</li>
+            </ul>
+            <h4>Intellectual Property</h4>
+            <p>All content displayed on the site — including texts, logos, designs, and images — is the property of <strong>Sokon Group</strong> or licensed to it, and is protected under intellectual property regulations.</p>
+            <h4>Partnerships & Contracts</h4>
+            <p>Submitting a partnership request through the site does not constitute a legal obligation by any party. All partnerships are subject to separate formal agreements signed between the relevant parties.</p>
+            <h4>Limitation of Liability</h4>
+            <p>We make every effort to ensure the accuracy of the information displayed, but we assume no responsibility for any direct or indirect damages resulting from the use of the site or reliance on its content.</p>
+            <h4>Amendments</h4>
+            <p>We reserve the right to modify these terms at any time. Amendments become effective upon publication on the site. Your continued use of the site after publication constitutes implicit acceptance of the amendments.</p>
+            <h4>Governing Law</h4>
+            <p>These terms are governed by and construed in accordance with the laws of the Kingdom of Saudi Arabia, and its courts have jurisdiction over any disputes arising from them.</p>
+          `
+        }
+      },
+      cookies: {
+        ar: {
+          title: 'سياسة ملفات تعريف الارتباط',
+          icon: 'fa-cookie-bite',
+          content: `
+            <h4>ما هي ملفات تعريف الارتباط؟</h4>
+            <p>ملفات تعريف الارتباط (Cookies) هي ملفات نصية صغيرة تُخزَّن على جهازك عند زيارة موقعنا، وتساعدنا على تحسين تجربتك وتذكّر تفضيلاتك.</p>
+            <h4>كيف نستخدمها</h4>
+            <ul>
+              <li><strong>ملفات ضرورية:</strong> لضمان عمل الموقع بشكل صحيح.</li>
+              <li><strong>ملفات الأداء:</strong> لفهم كيفية استخدام الزوار للموقع وتحسينه.</li>
+              <li><strong>ملفات التفضيلات:</strong> لتذكر لغتك المفضلة وإعداداتك.</li>
+            </ul>
+            <h4>التحكم في ملفات تعريف الارتباط</h4>
+            <p>يمكنك التحكم في ملفات تعريف الارتباط أو حذفها من خلال إعدادات متصفحك. يرجى ملاحظة أن تعطيل بعض الملفات قد يؤثر على تجربتك في الموقع.</p>
+            <h4>ملفات الطرف الثالث</h4>
+            <p>قد يستخدم موقعنا خدمات طرف ثالث (مثل Google Fonts و CDN) التي قد تضع ملفات تعريف ارتباط خاصة بها. لا نتحكم في هذه الملفات وننصح بمراجعة سياسات الخصوصية لتلك الخدمات.</p>
+            <h4>الموافقة</h4>
+            <p>باستمرارك في استخدام موقعنا، فإنك توافق على استخدام ملفات تعريف الارتباط وفقًا لهذه السياسة.</p>
+          `
+        },
+        en: {
+          title: 'Cookies Policy',
+          icon: 'fa-cookie-bite',
+          content: `
+            <h4>What Are Cookies?</h4>
+            <p>Cookies are small text files stored on your device when you visit our site. They help us improve your experience and remember your preferences.</p>
+            <h4>How We Use Them</h4>
+            <ul>
+              <li><strong>Essential cookies:</strong> to ensure the site functions correctly.</li>
+              <li><strong>Performance cookies:</strong> to understand how visitors use the site and improve it.</li>
+              <li><strong>Preference cookies:</strong> to remember your preferred language and settings.</li>
+            </ul>
+            <h4>Controlling Cookies</h4>
+            <p>You can control or delete cookies through your browser settings. Please note that disabling some cookies may affect your experience on the site.</p>
+            <h4>Third-Party Cookies</h4>
+            <p>Our site may use third-party services (such as Google Fonts and CDNs) that may set their own cookies. We do not control these cookies and recommend reviewing the privacy policies of those services.</p>
+            <h4>Consent</h4>
+            <p>By continuing to use our site, you consent to the use of cookies in accordance with this policy.</p>
+          `
+        }
+      }
+    };
+
+    function openLegalModal(type) {
+      const lang = html.getAttribute('lang') || 'ar';
+      const data = LEGAL_DATA[type][lang];
+      legalContent.innerHTML = data.content;
+      legalIcon.className = 'fa-solid ' + data.icon;
+
+      const ltAr = document.getElementById('legalTitleAr');
+      const ltEn = document.getElementById('legalTitleEn');
+      const titles = { privacy: { ar: 'سياسة الخصوصية', en: 'Privacy Policy' }, terms: { ar: 'الشروط والأحكام', en: 'Terms & Conditions' }, cookies: { ar: 'سياسة ملفات تعريف الارتباط', en: 'Cookies Policy' } };
+      ltAr.textContent = titles[type].ar;
+      ltEn.textContent = titles[type].en;
+      if (lang === 'ar') { ltAr.removeAttribute('hidden'); ltEn.setAttribute('hidden',''); }
+      else { ltAr.setAttribute('hidden',''); ltEn.removeAttribute('hidden'); }
+
+      legalModalOverlay.classList.add('open');
+      legalModal.classList.add('open');
+      legalModal.querySelector('.modal-box') || (legalModal.scrollTop = 0);
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLegalModal() {
+      legalModalOverlay.classList.remove('open');
+      legalModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    closeLegalBtn?.addEventListener('click', closeLegalModal);
+    legalModalOverlay?.addEventListener('click', closeLegalModal);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (partnerModal.classList.contains('open')) closePartnerModal();
+        if (legalModal.classList.contains('open')) closeLegalModal();
+      }
+    });
+
+    /* ------------------ Stats Counter ------------------ */
+    const counters = document.querySelectorAll('[data-counter]');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.counter);
+          let count = 0;
+          const step = Math.max(1, Math.floor(target / 40));
+          const timer = setInterval(() => {
+            count += step;
+            if (count >= target) { count = target; clearInterval(timer); }
+            el.textContent = '+' + count;
+          }, 30);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObserver.observe(c));
+
+    /* ============================================================
+       CHATBOT
+       ============================================================ */
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotPanel  = document.getElementById('chatbot-panel');
+    const chatClose     = document.getElementById('chatClose');
+    const chatBody      = document.getElementById('chatBody');
+    const chatInput     = document.getElementById('chatInput');
+    const chatInputEn   = document.getElementById('chatInputEn');
+    const chatSend      = document.getElementById('chatSend');
+
+    function getLang() { return html.getAttribute('lang') || 'ar'; }
+
+    function fmtTime() {
+      const d = new Date();
+      const h = String(d.getHours()).padStart(2, '0');
+      const m = String(d.getMinutes()).padStart(2, '0');
+      return `${h}:${m}`;
+    }
+
+    function appendMsg(text, who = 'bot', options = {}) {
+      const div = document.createElement('div');
+      div.className = 'chat-msg ' + who;
+      const time = options.noTime ? '' : `<span class="chat-time" dir="ltr">${fmtTime()}</span>`;
+      div.innerHTML = text + time;
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      return div;
+    }
+
+    function showTyping() {
+      if (document.getElementById('typingIndicator')) return;
+      const div = document.createElement('div');
+      div.className = 'chat-msg bot';
+      div.id = 'typingIndicator';
+      div.innerHTML = '<span class="typing-dots"><span></span><span></span><span></span></span>';
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    function hideTyping() {
+      const el = document.getElementById('typingIndicator');
+      if (el) el.remove();
+    }
+
+    const KB = {
+      sectors: {
+        ar: 'تضم مجموعة سكون <b>8 قطاعات</b> رئيسية:<br>🍽️ المطاعم والكافيهات<br>🛋️ الديوانيات<br>🏡 النزل الريفية<br>🌾 المزارع<br>🏛️ البيوت الأثرية<br>🚌 المواصلات<br>🚚 اللوجستيك<br>🏖️ السياحة<br><br>وتُضاف كيانات جديدة باستمرار.',
+        en: 'Sokon Group includes <b>8 core sectors</b>:<br>🍽️ Restaurants & Cafés<br>🛋️ Diwaniyas<br>🏡 Countryside Lodges<br>🌾 Farms<br>🏛️ Heritage Houses<br>🚌 Transport<br>🚚 Logistics<br>🏖️ Tourism<br><br>More entities are being added continuously.'
+      },
+      partners: {
+        ar: 'لدينا تعاونات قائمة مع:<br>🏛️ <b>إمارة منطقة جازان</b><br>📊 <b>المكتب الاستراتيجي لتطوير منطقة جازان</b><br>✈️ <b>عالم السفر للسياحة</b><br><br>وهناك شراكات جديدة قيد الدراسة.',
+        en: 'We currently collaborate with:<br>🏛️ <b>Jazan Emirate</b><br>📊 <b>Strategic Office for Jazan Development</b><br>✈️ <b>Alam Al Safar Tourism</b><br><br>New partnerships are under consideration.'
+      },
+      contact: {
+        ar: 'يسعدنا تواصلك 🌿<br>📧 <b>info@sakangroup.sa</b><br>📞 <b>+966 5X XXX XXXX</b><br>📍 منطقة جازان، السعودية<br><br>أو عبّئ نموذج التواصل أسفل الصفحة.',
+        en: 'We\'d love to hear from you 🌿<br>📧 <b>info@sakangroup.sa</b><br>📞 <b>+966 5X XXX XXXX</b><br>📍 Jazan Region, Saudi Arabia<br><br>Or fill out the contact form below.'
+      },
+      partnership: {
+        ar: 'ممتاز! 🤝<br>للتقدم بطلب شراكة:<br>1️⃣ اضغط على زر «شريك استراتيجي» في الأعلى<br>2️⃣ أو عبّئ نموذج التواصل<br>3️⃣ اختر «شراكة استراتيجية»<br><br>سيتواصل معك فريق تطوير الأعمال خلال 24-48 ساعة.',
+        en: 'Great! 🤝<br>To submit a partnership request:<br>1️⃣ Click "Partner with us" at the top<br>2️⃣ Or fill out the contact form<br>3️⃣ Choose "Strategic partnership"<br><br>Our business development team will contact you within 24-48 hours.'
+      },
+      about: {
+        ar: 'مجموعة سكون منظومة مؤسسية متكاملة تضم عدة كيانات وقطاعات، تعمل على تطوير وإدارة مشاريع نوعية في منطقة جازان، مع بناء شراكات استراتيجية فاعلة مع القطاعين العام والخاص.',
+        en: 'Sokon Group is an integrated institutional ecosystem of entities and sectors, developing and managing quality projects in Jazan, alongside effective strategic partnerships with public and private sectors.'
+      },
+      careers: {
+        ar: 'نرحب بالكفاءات! 🌟<br>أرسل سيرتك الذاتية عبر نموذج التواصل واختر «فرصة عمل»، وسنعود إليك عند توفر الشاغر المناسب.',
+        en: 'We welcome talent! 🌟<br>Send your CV via the contact form and choose "Job opportunity" — we\'ll get back to you when a suitable role opens.'
+      },
+      vision: {
+        ar: 'رؤيتنا: أن نكون <b>منظومة رائدة</b> في تنمية وتطوير المشاريع النوعية بمنطقة جازان، مع أثر اقتصادي واجتماعي مستدام.',
+        en: 'Our vision: to be a <b>leading ecosystem</b> developing quality projects in Jazan, with sustainable economic and social impact.'
+      },
+      hours: {
+        ar: '⏰ أوقات العمل:<br>الأحد - الخميس: 9 ص - 6 م<br>الجمعة والسبت: حسب الطلب<br><br>الشات متاح 24/7.',
+        en: '⏰ Working hours:<br>Sun - Thu: 9 AM - 6 PM<br>Fri & Sat: On demand<br><br>Chat is available 24/7.'
+      }
+    };
+
+    function matchIntent(text) {
+      const t = (text || '').toLowerCase().trim();
+      if (!t) return null;
+      if (/(sector|قطاع|قطاعات|خدمات|service|offer|تقدم|تقدّم|تقدمون|أقسام|اقسام)/i.test(t)) return 'sectors';
+      if (/(vision|رؤي|رؤية|هدف|aim|mission)/i.test(t)) return 'vision';
+      if (/(partner|شراكة قائمة|شركاء|تعاون|تعاونات|إمارة|امارة|عالم السفر|المكتب الاستراتيجي)/i.test(t)) return 'partners';
+      if (/(أريد شراكة|ابغى شراكة|أرغب بشراكة|become partner|want to partner|i want.*partner)/i.test(t)) return 'partnership';
+      if (/(contact|تواصل|اتصال|جوال|ايميل|بريد|هاتف|phone|email|whatsapp|واتس)/i.test(t)) return 'contact';
+      if (/(وظيف|شاغر|career|job|cv|سيرة|توظيف)/i.test(t)) return 'careers';
+      if (/(ساعات|وقت|متى|hours|time|open|مفتوح)/i.test(t)) return 'hours';
+      if (/(about|من انتم|من أنتم|سكون|sakan|who are you)/i.test(t)) return 'about';
+      return null;
+    }
+
+    function botReply(userText) {
+      const lang = getLang();
+      showTyping();
+      const delay = 600 + Math.random() * 500;
+      setTimeout(() => {
+        hideTyping();
+        const intent = matchIntent(userText);
+        if (intent && KB[intent]) { appendMsg(KB[intent][lang]); return; }
+        if (lang === 'ar') {
+          appendMsg('شكرًا لتواصلك 🌿<br>لم أفهم سؤالك بدقة. يمكنك السؤال عن:<br>• <b>القطاعات</b> — ما هي أقسام المجموعة<br>• <b>الشراكات</b> — من نتعاون معه<br>• <b>التواصل</b> — كيف تصل إلينا<br>• <b>فرص الشراكة</b> — كيف تكون شريكًا<br>• <b>الوظائف</b> — كيف تنضم لفريقنا');
+        } else {
+          appendMsg('Thanks for reaching out 🌿<br>I didn\'t quite catch that. You can ask about:<br>• <b>Sectors</b> — what divisions we have<br>• <b>Partnerships</b> — who we work with<br>• <b>Contact</b> — how to reach us<br>• <b>Partnership requests</b> — how to become a partner<br>• <b>Careers</b> — how to join our team');
+        }
+      }, delay);
+    }
+
+    function sendMessage() {
+      const lang = getLang();
+      const input = lang === 'ar' ? chatInput : chatInputEn;
+      const text = input.value.trim();
+      if (!text) return;
+      appendMsg(text, 'user');
+      input.value = '';
+      botReply(text);
+    }
+
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keydown', e => e.key === 'Enter' && sendMessage());
+    chatInputEn.addEventListener('keydown', e => e.key === 'Enter' && sendMessage());
+
+    document.querySelectorAll('#chatQuick button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const q = btn.getAttribute('data-q');
+        const lang = getLang();
+        const label = btn.querySelector(`[data-lang="${lang}"]`)?.textContent?.trim() || btn.textContent.trim();
+        appendMsg(label, 'user');
+        showTyping();
+        setTimeout(() => { hideTyping(); if (KB[q]) appendMsg(KB[q][lang]); }, 700);
+      });
+    });
+
+    function renderWelcome() {
+      if (!chatBody) return;
+      chatBody.innerHTML = '';
+      const lang = getLang();
+      const welcome = lang === 'ar'
+        ? 'أهلًا بك في <b>مجموعة سكون</b> 👋<br>أنا مساعدك الذكي.<br>يمكنك السؤال عن: <b>القطاعات، الشراكات، التواصل، الوظائف، أو طلب شراكة</b>.'
+        : 'Welcome to <b>Sokon Group</b> 👋<br>I\'m your smart assistant.<br>Ask me about: <b>sectors, partnerships, contact, careers, or partnership requests</b>.';
+      setTimeout(() => appendMsg(welcome), 200);
+      setTimeout(() => {
+        appendMsg(lang === 'ar' ? 'كيف يمكنني مساعدتك اليوم؟ 🌿' : 'How can I help you today? 🌿');
+      }, 900);
+    }
+
+    chatbotToggle.addEventListener('click', () => {
+      const opening = !chatbotPanel.classList.contains('open');
+      chatbotPanel.classList.toggle('open');
+      chatbotToggle.classList.toggle('active', opening);
+      if (opening && chatBody.children.length === 0) {
+        renderWelcome();
+        setTimeout(() => { (getLang() === 'ar' ? chatInput : chatInputEn).focus(); }, 350);
+      }
+    });
+
+    chatClose.addEventListener('click', () => {
+      chatbotPanel.classList.remove('open');
+      chatbotToggle.classList.remove('active');
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && chatbotPanel.classList.contains('open')) {
+        chatbotPanel.classList.remove('open');
+        chatbotToggle.classList.remove('active');
+      }
+    });
+  </script>
 </body>
 
 </html>
